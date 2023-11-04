@@ -1,4 +1,5 @@
 import * as dotenv from "dotenv";
+import cors from "cors"
 
 dotenv.config();
 import express from "express";
@@ -8,7 +9,7 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 // Router
 import authRouter from "./routes/authRouter.js" 
-const cors = require("cors");
+ 
 
 // middleware
 // import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
@@ -28,6 +29,10 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.json());
 app.use(cookieParser());
 app.get("/api/v1/test", (req, res) => {
+  res.cookie("Test",  "QWERTY", {
+    httpOnly: true,
+    expires: new Date(Date.now() + oneDay) 
+  });
   res.json({ message: "test" });
 });
 // app.use("/api/v1/jobs", authenticateUser, jobRouter);
