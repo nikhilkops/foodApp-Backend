@@ -28,6 +28,9 @@ if (process.env.NODE_ENV === "development") {
 
 app.use(express.json());
 app.use(cookieParser());
+app.get("/", (req, res) => {
+  res.send("test");
+});
 app.get("/api/v1/test", (req, res) => {
    const oneDay = 1000 * 60 * 60 * 24;
   res.cookie("Test",  "QWERTY", {
