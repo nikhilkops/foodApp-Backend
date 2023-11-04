@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 // Router
 import authRouter from "./routes/authRouter.js" 
+const cors = require("cors");
 
 // middleware
 // import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
@@ -18,6 +19,8 @@ import authRouter from "./routes/authRouter.js"
 //   const { name } = req.body;
 //   res.json({ name });
 // });
+
+app.use(cors({ origin: "https://omnifood-nikhilverma.netlify.app" }));
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
