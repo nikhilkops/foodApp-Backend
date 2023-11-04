@@ -13,6 +13,7 @@
   "keywords": [],
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "helmet": "^4.6.0",
     "cloudinary": "^1.37.3",
     "concurrently": "^8.0.1",
     "cookie-parser": "^1.4.6",
@@ -23,8 +24,7 @@
     "express-async-errors": "^3.1.1",
     "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^6.8.0",
-    "express-validator": "^7.0.1",
-    "helmet": "^7.0.0",
+    "express-validator": "^7.0.1" ,
     "http-status-codes": "^2.2.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.5",
