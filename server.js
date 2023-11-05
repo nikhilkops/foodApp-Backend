@@ -52,7 +52,7 @@ app.get("/", (req, res) => {
     expires: new Date(Date.now() + oneDay),
     secure: true,
   });
-  res.json({ message: "This is a message from test route" });
+  res.json({ message: "This is a message from default route" });
 });
 app.get("/api/v1/hello", (req, res) => {
   res.json({msg:"Hello"});
