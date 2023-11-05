@@ -8,10 +8,11 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 // Router
 import authRouter from "./routes/authRouter.js";
+import userRouter from "./routes/userRouter.js";
 
 // middleware
 import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
-// import { authenticateUser } from "./middlewares/authMiddleware.js";
+import { authenticateUser } from "./middlewares/authMiddleware.js";
 
 app.use(cors({ origin: "https://foodapp-react-sctz.onrender.com/" }));
 
@@ -24,7 +25,7 @@ app.use(cookieParser());
 
 // Routes for login logout signup
 app.use("/api/v1/auth", authRouter);
-
+app.use("/api/v1/users", authenticateUser, userRouter); 
 
 app.get("/api/v1/test", (req, res) => {
   const oneDay = 1000 * 60 * 60 * 24;
