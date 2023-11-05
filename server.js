@@ -1,7 +1,7 @@
 import * as dotenv from "dotenv";
-import cors from "cors";
 dotenv.config();
 import express from "express";
+import cors from "cors";
 const app = express();
 import morgan from "morgan";
 import mongoose from "mongoose";
@@ -14,11 +14,11 @@ import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
 // import { authenticateUser } from "./middlewares/authMiddleware.js";
 
 app.use(cors({ origin: "https://foodapp-react-sctz.onrender.com/" }));
+
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-app.use(errorHandlerMiddleware);
 app.use(express.json());
 app.use(cookieParser());
 
@@ -35,7 +35,6 @@ app.get("/api/v1/test", (req, res) => {
   });
   return res.json({ message: "This is a we message from test route" });
 }); 
-//middleware 
 app.get("/api/v1/hello", (req, res) => {
   return res.json({ msg: "Hello" });
 });
@@ -49,10 +48,9 @@ app.get("/", (req, res, next) => {
   });
   return res.json({ message: "This is a message from default route" });
 });
-app.use("*", (req, res) => {
-  res.status(404).json({ msg: `Not Found` });
-});
 
+//middleware 
+app.use(errorHandlerMiddleware);
 
 const PORT = process.env.PORT || 1100; 
 try {
