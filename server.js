@@ -45,7 +45,12 @@ app.use("/api/v1/auth", authRouter);
 //middleware
 // app.use(errorHandlerMiddleware);
 
- 
+app.get("/", (req, res) => {
+  res.send("Hello I am backend of OmniFood");
+});
+app.get("/api/v1/hello", (req, res) => {
+  res.send("Hello");
+});
 const PORT = process.env.PORT || 1100;
 
 try {
