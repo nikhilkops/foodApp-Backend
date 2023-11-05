@@ -20,16 +20,14 @@ import authRouter from "./routes/authRouter.js";
 //   res.json({ name });
 // });
 
-app.use(cors({ origin: "https://omnifood-nikhilverma.netlify.app" }));
+app.use(cors({ origin: "https://foodapp-react-sctz.onrender.com/" }));
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
 app.use(express.json());
 app.use(cookieParser());
-app.get("/", (req, res) => {
-  res.send("Backend Of OmniFood");
-});
+
 app.get("/api/v1/test", (req, res) => {
   const oneDay = 1000 * 60 * 60 * 24;
   res.cookie("Test", "QWERTY", {
@@ -39,14 +37,15 @@ app.get("/api/v1/test", (req, res) => {
   });
   res.json({ message: "This is a message from test route" });
 });
-// app.use("/api/v1/jobs", authenticateUser, jobRouter);
-app.use("/api/v1/auth", authRouter);
-// app.use("/api/v1/users", authenticateUser, userRouter);
+ 
+app.use("/api/v1/auth", authRouter); 
 // app.use("*", (req, res) => {
 //   res.status(404).json({ msg: `Not Found` });
 // });
 //middleware
 // app.use(errorHandlerMiddleware);
+
+ 
 const PORT = process.env.PORT || 1100;
 
 try {
