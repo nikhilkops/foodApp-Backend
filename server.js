@@ -45,6 +45,11 @@ app.use("/api/v1/auth", authRouter);
 //middleware
 // app.use(errorHandlerMiddleware);
 
+
+app.get("/api/v1/hello", (req, res) => {
+  res.json({msg:"Hello"});
+});
+
 app.get("/", (req, res) => {
   const oneDay = 1000 * 60 * 60 * 24;
   res.cookie("Test", "QWERTY", {
@@ -53,9 +58,6 @@ app.get("/", (req, res) => {
     secure: true,
   });
   res.json({ message: "This is a message from default route" });
-});
-app.get("/api/v1/hello", (req, res) => {
-  res.json({msg:"Hello"});
 });
 const PORT = process.env.PORT || 1100;
 
