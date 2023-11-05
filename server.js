@@ -37,7 +37,7 @@ app.get("/api/v1/test", (req, res) => {
     expires: new Date(Date.now() + oneDay),
     secure: true,
   });
-  res.json({ message: "I am at address /api/v1/test" });
+  res.json({ message: "This is a message from test route" });
 });
 // app.use("/api/v1/jobs", authenticateUser, jobRouter);
 app.use("/api/v1/auth", authRouter);
