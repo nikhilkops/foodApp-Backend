@@ -35,7 +35,7 @@ app.get("/api/v1/test", (req, res) => {
     expires: new Date(Date.now() + oneDay),
     secure: true,
   });
-  res.json({ message: "This is a message from test route" });
+  return res.json({ message: "This is a message from test route" });
 });
  
 app.use("/api/v1/auth", authRouter); 
@@ -47,7 +47,7 @@ app.use("/api/v1/auth", authRouter);
 
 
 app.get("/api/v1/hello", (req, res) => {
-  res.json({msg:"Hello"});
+  return res.json({msg:"Hello"});
 });
 
 app.get("/", (req, res) => {
@@ -57,7 +57,7 @@ app.get("/", (req, res) => {
     expires: new Date(Date.now() + oneDay),
     secure: true,
   });
-  res.json({ message: "This is a message from default route" });
+  return res.json({ message: "This is a message from default route" });
 });
 const PORT = process.env.PORT || 1100;
 
