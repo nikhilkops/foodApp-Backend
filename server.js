@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-import cors from "cors"
+import cors from "cors";
 
 dotenv.config();
 import express from "express";
@@ -8,8 +8,7 @@ import morgan from "morgan";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 // Router
-import authRouter from "./routes/authRouter.js" 
- 
+import authRouter from "./routes/authRouter.js";
 
 // middleware
 // import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
@@ -29,15 +28,16 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.json());
 app.use(cookieParser());
 app.get("/", (req, res) => {
-  res.send("test");
+  res.send("Backend Of OmniFood");
 });
 app.get("/api/v1/test", (req, res) => {
-   const oneDay = 1000 * 60 * 60 * 24;
-  res.cookie("Test",  "QWERTY", {
+  const oneDay = 1000 * 60 * 60 * 24;
+  res.cookie("Test", "QWERTY", {
     httpOnly: true,
-    expires: new Date(Date.now() + oneDay) 
+    expires: new Date(Date.now() + oneDay),
+    secure: true,
   });
-  res.json({ message: "test" });
+  res.json({ message: "I am at address /api/v1/test" });
 });
 // app.use("/api/v1/jobs", authenticateUser, jobRouter);
 app.use("/api/v1/auth", authRouter);
