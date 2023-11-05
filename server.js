@@ -33,7 +33,7 @@ app.get("/api/v1/test", (req, res) => {
     expires: new Date(Date.now() + oneDay),
     secure: true,
   });
-  return res.json({ message: "This is a message from test route" });
+  return res.json({ message: "This is a we message from test route" });
 }); 
 //middleware 
 app.get("/api/v1/hello", (req, res) => {
