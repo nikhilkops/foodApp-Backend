@@ -51,14 +51,14 @@ app.get("/api/v1/hello", (req, res) => {
 });
 
 app.get("/", (req, res,next) => {
-  // const oneDay = 1000 * 60 * 60 * 24;
-  // res.cookie("Test", "QWERTY", {
-  //   httpOnly: true,
-  //   expires: new Date(Date.now() + oneDay),
-  //   secure: true,
-  // });
-  // return res.json({ message: "This is a message from default route" });
-  next();
+  const oneDay = 1000 * 60 * 60 * 24;
+  res.cookie("Test", "QWERTY", {
+    httpOnly: true,
+    expires: new Date(Date.now() + oneDay),
+    secure: true,
+  });
+  return res.json({ message: "This is a message from default route" });
+ 
 });
 const PORT = process.env.PORT || 1100;
 
