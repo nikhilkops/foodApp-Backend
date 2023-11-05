@@ -46,7 +46,13 @@ app.use("/api/v1/auth", authRouter);
 // app.use(errorHandlerMiddleware);
 
 app.get("/", (req, res) => {
-  res.send("Hello I am backend of OmniFood");
+  const oneDay = 1000 * 60 * 60 * 24;
+  res.cookie("Test", "QWERTY", {
+    httpOnly: true,
+    expires: new Date(Date.now() + oneDay),
+    secure: true,
+  });
+  res.json({ message: "This is a message from test route" });
 });
 app.get("/api/v1/hello", (req, res) => {
   res.json({msg:"Hello"});
