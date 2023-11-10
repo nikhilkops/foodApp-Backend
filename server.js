@@ -8,8 +8,8 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 // Router
 import authRouter from "./routes/authRouter.js";
-import userRouter from "./routes/userRouter.js";
-
+import userRouter from "./routes/userRouter.js"; 
+import pricingRouter from "./routes/pricingRoutes.js"
 // middleware
 import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
 import { authenticateUser } from "./middlewares/authMiddleware.js";
@@ -26,6 +26,7 @@ app.use(cookieParser());
 // Routes for login logout signup
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", authenticateUser, userRouter); 
+app.use("/api/v1/pricing",pricingRouter)
 
 app.get("/api/v1/test", (req, res) => {
   const oneDay = 1000 * 60 * 60 * 24;
@@ -50,10 +51,10 @@ app.get("/", (req, res, next) => {
   return res.json({ message: "This is a message from default route" });
 });
 
-//middleware 
+//middleware  
 app.use(errorHandlerMiddleware);
 
-const PORT = process.env.PORT || 1100; 
+const PORT = process.env.PORT || 1100;  
 try {
   await mongoose.connect(process.env.MONGO_URL);
   app.listen(PORT, () => {
