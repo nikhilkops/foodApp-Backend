@@ -10,10 +10,12 @@ import cookieParser from "cookie-parser";
 import authRouter from "./routes/authRouter.js";
 import userRouter from "./routes/userRouter.js";
 import pricingRouter from "./routes/pricingRoutes.js"
+// import paymentRouter from "./routes/paymentRouter.js"
 // middleware
 import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
 import { authenticateUser } from "./middlewares/authMiddleware.js";
 
+//CORS
 app.use(cors({ origin: "https://foodapp-react-sctz.onrender.com/" }));
 
 if (process.env.NODE_ENV === "development") {
@@ -25,9 +27,12 @@ app.use(cookieParser());
 
 // Routes for login logout signup
 app.use("/api/v1/auth", authRouter);
+//Route Getting current User
 app.use("/api/v1/users", authenticateUser, userRouter);
+//Getting Pricing card Data
 app.use("/api/v1/pricing", pricingRouter)
-app.use("api/v1/payment")
+//Handling Payment
+// app.use("api/v1/payment",paymentRouter)
 
 
 app.get("/", (req, res, next) => { 
