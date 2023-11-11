@@ -1,5 +1,7 @@
 import * as dotenv from "dotenv";
 dotenv.config();
+//Payment
+import Razorpay from 'razorpay'
 import express from "express";
 import cors from "cors";
 const app = express();
@@ -14,22 +16,21 @@ import paymentRouter from "./routes/paymentRouter.js"
 // middleware
 import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
 import { authenticateUser } from "./middlewares/authMiddleware.js"; 
+app.use(express.json());
+app.use(cookieParser());
 //CORS
 app.use(cors({ origin: "https://foodapp-react-sctz.onrender.com/" })); 
 
-//Payment
-import Razorpay from 'razorpay'
  
 export const RazorPayInstance = new Razorpay({
     key_id: process.env.RAZORPAY_API_KEY,
     key_secret: process.env.RAZORPAY_API_SECRET,
   });
+  
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-app.use(express.json());
-app.use(cookieParser());
 
 // Routes for login logout signup
 app.use("/api/v1/auth", authRouter);
