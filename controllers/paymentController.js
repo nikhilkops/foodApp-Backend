@@ -19,6 +19,6 @@ export const checkout = async (req, res) => {
 
     } catch (error) {
         console.log(error)
-        res.json({ "error": "sadasdas" })
+        res.json({ "error":  error.message})
     }
 }
