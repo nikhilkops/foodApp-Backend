@@ -3,11 +3,12 @@ import mongoose from "mongoose";
 import { RazorPayInstance } from '../server.js'
 export const checkout = async (req, res) => {
     try {
-        const documentId = new mongoose.Types.ObjectId(req.body.id); 
+        const documentId = new mongoose.Types.ObjectId(req.body.id);
         const currentPrice = await PricingModel.findById({ _id: documentId });
-
+        const price = (Number)(currentPrice.pricing) * 100;
+        console.log(typeof price)
         const checkoutOrder = {
-            amount: currentPrice.pricing * 100,
+            amount:  price,
             currency: "USD"
         }
 
@@ -16,6 +17,6 @@ export const checkout = async (req, res) => {
 
     } catch (error) {
         console.log(error)
-        res.json({"error":"sadasdas"})
+        res.json({ "error": "sadasdas" })
     }
 }
