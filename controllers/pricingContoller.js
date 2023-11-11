@@ -8,3 +8,15 @@ export const getAllPlans = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }
+
+export const getSinglePlan = async (req, res) => {
+    try {
+        const documentId = req.params.id; 
+        const result = await PricingModel.findById({ _id: documentId });
+        res.json(result)
+    }
+    catch (error) {
+        res.json(error)
+    }
+}
+
