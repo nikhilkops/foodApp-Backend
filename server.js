@@ -16,7 +16,7 @@ import paymentRouter from "./routes/paymentRouter.js"
 // middleware
 import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
 import { authenticateUser } from "./middlewares/authMiddleware.js"; 
-app.use(express.json());
+app.use(express.json()); 
 app.use(cookieParser());
 //CORS
 app.use(cors({ origin: "https://foodapp-react-sctz.onrender.com/" })); 

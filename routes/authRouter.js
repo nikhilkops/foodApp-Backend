@@ -6,5 +6,6 @@ import {validateUserLogin, validateUserSignup } from "../middlewares/validationM
 
 router.route("/login").post(validateUserLogin,userLogin);
 router.route("/register").post(validateUserSignup,userSignup);
-router.route("/logout").get(userLogout)
+router.route("/logout").get(userLogout) 
+
 export default router;

@@ -42,3 +42,4 @@ export const userLogout = async(req,res)=>{
 
   res.status(StatusCodes.OK).json({message:'User Logout!'})
 }
+ 

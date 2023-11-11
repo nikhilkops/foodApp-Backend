@@ -1,8 +1,8 @@
 import { Router } from "express";
 const router = Router();
 
-import { checkout } from "../controllers/paymentController.js";
+import { checkout   } from "../controllers/paymentController.js";
 
-router.route("/checkout").get( checkout )  
+router.route("/checkout").get( checkout )   
 
 export default router;
