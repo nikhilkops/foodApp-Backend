@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { RazorPayInstance } from '../server.js'
 export const checkout = async (req, res) => {
     try {
+        console.log(req.body)
         const documentId = new mongoose.Types.ObjectId(req.body.id);
         const currentPrice = await PricingModel.findById( documentId);
         console.log(currentPrice)
