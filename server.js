@@ -18,6 +18,7 @@ import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
 import { authenticateUser } from "./middlewares/authMiddleware.js"; 
 app.use(express.json()); 
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }))
 //CORS
 app.use(cors({ origin: "https://foodapp-react-sctz.onrender.com/" })); 
 

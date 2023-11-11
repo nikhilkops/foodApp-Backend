@@ -6,6 +6,7 @@ import { encryptPassword, comparePassword } from "../utils/passwordUtils.js";
 import { createJWT } from "../utils/tokenUtils.js";
 
 export const userLogin = async (req, res) => {
+  console.log(req.body)
   const { email, password } = req.body;
   const user = await UserModel.findOne({ email });
 
@@ -42,4 +43,5 @@ export const userLogout = async(req,res)=>{
 
   res.status(StatusCodes.OK).json({message:'User Logout!'})
 }
+ 
  
