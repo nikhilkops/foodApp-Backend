@@ -1,14 +1,8 @@
 import { Router } from "express";
-import Razorpay from "razorpay";
-const router = Router();
 import { checkout } from "../controllers/paymentController.js";
+const router = Router();
 
-export const razorPayInstance = new Razorpay({
-    key_id: process.env.RAZORPAY_API_KEY,
-    key_secret: process.env.RAZORPAY_API_SECRET
-})
-
-
-router.route("/checkout").post(checkout);
-router.route("/payment-verification").post();
+router.route("/checkout").get( checkout )
+ 
+ 
 export default router;
