@@ -5,8 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import { encryptPassword, comparePassword } from "../utils/passwordUtils.js";
 import { createJWT } from "../utils/tokenUtils.js";
 
-export const userLogin = async (req, res) => {
-  console.log(req.body)
+export const userLogin = async (req, res) => { 
   const { email, password } = req.body;
   const user = await UserModel.findOne({ email });
 
