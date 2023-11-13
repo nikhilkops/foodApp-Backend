@@ -8,6 +8,7 @@ const app = express();
 import morgan from "morgan";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
+import rateLimit from "express-rate-limit";
 // Router
 import authRouter from "./routes/authRouter.js";
 import userRouter from "./routes/userRouter.js";
@@ -19,6 +20,11 @@ import { authenticateUser } from "./middlewares/authMiddleware.js";
 app.use(express.json()); 
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }))
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+});
+app.use(limiter);
 //CORS
 app.use(cors({ origin: "https://foodapp-react-sctz.onrender.com/" })); 
 

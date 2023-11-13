@@ -9,12 +9,22 @@ export const checkout = async (req, res) => {
     try {
         const documentId = new mongoose.Types.ObjectId(req.params.id);
         const currentPrice = await PricingModel.findById(documentId);
+ 
         const price = (Number)(currentPrice.pricing) * 100;
         const checkoutOrder = {
             amount: price,
             currency: "INR"
-        }
+        } 
+        // pricing: 9999,
+        // planType: 'Starter',
+
+        const selectedPlan = {
+            planType:currentPrice.planType,
+            price:currentPrice.pricing
+        } 
         const order = await RazorPayInstance.orders.create(checkoutOrder)
+        order.cPlan = selectedPlan;
+
         res.json(order)
 
     } catch (error) {
@@ -24,7 +34,7 @@ export const checkout = async (req, res) => {
 }
 
 export const paymentVerification = async (req, res) => {
-    console.log(req.body)
+ 
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
     const body = razorpay_order_id + "|" + razorpay_payment_id;
 
@@ -34,7 +44,7 @@ export const paymentVerification = async (req, res) => {
         .digest("hex");
 
     const isAuthentic = expectedSignature === razorpay_signature;
-    console.log("Verification")
+   
     if (isAuthentic) {
         //storein database
         let VerificationRedirectURL = `https://foodapp-react-sctz.onrender.com/sucessfull?reference=${razorpay_payment_id}`
@@ -43,7 +53,6 @@ export const paymentVerification = async (req, res) => {
     }
 }
 
-export const getKey = (req, res) => {
-    // console.log("get Key")
+export const getKey = (req, res) => {  
     res.json({ key: process.env.RAZORPAY_API_KEY })
 }
