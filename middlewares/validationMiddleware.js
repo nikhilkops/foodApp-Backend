@@ -1,7 +1,7 @@
 import { body, param, validationResult } from "express-validator";
-import { BadRequestError, NotFoundError,UnauthenticatedError, Unauthorized } from "../errors/customErros.js";
+import { BadRequestError, NotFoundError, UnauthenticatedError, Unauthorized } from "../errors/customErros.js";
 import { JOB_STATUS, JOB_TYPE, ROLE_TYPE } from "../utils/constants.js";
-import mongoose from "mongoose"; 
+import mongoose from "mongoose";
 import User from "../models/UserModel.js";
 
 const withValidationErrors = (validationValues) => {
@@ -45,17 +45,17 @@ export const validateJobInput = withValidationErrors([
 ]);
 
 export const validateIdParams = withValidationErrors([
-  param("id").custom(async (id,{req}) => {
+  param("id").custom(async (id, { req }) => {
     const isMongoDBIdValid = mongoose.Types.ObjectId.isValid(id);
     if (!isMongoDBIdValid)
       throw new BadRequestError(`MongoDB id :${id} is not valid`);
 
-    const job = await Job.findById(String(id)); 
+    const job = await Job.findById(String(id));
 
-    const isAdmin = req.user.role=== ROLE_TYPE.ADMIN;
-    const isOwner = req.user.userId ===job.createdBy.toString();
+    const isAdmin = req.user.role === ROLE_TYPE.ADMIN;
+    const isOwner = req.user.userId === job.createdBy.toString();
 
-    if(!isAdmin && isOwner) throw new Unauthorized("Not Authorized to access this route")
+    if (!isAdmin && isOwner) throw new Unauthorized("Not Authorized to access this route")
 
     if (!job) {
       throw new NotFoundError(`No Job with id :${id}`);
@@ -70,8 +70,8 @@ export const validateUserLogin = withValidationErrors([
     .withMessage("Email cannot be empty")
     .isEmail()
     .withMessage("Invalid Email Format")
-   ,
-    body("password").trim().notEmpty().withMessage("Password cannot be empty")
+  ,
+  body("password").trim().notEmpty().withMessage("Password cannot be empty")
 ]);
 
 export const validateUserSignup = withValidationErrors([
@@ -105,14 +105,22 @@ export const validateUpdateUserInput = withValidationErrors([
     .withMessage("Email cannot be empty")
     .isEmail()
     .withMessage("Invalid Email Format")
-    .custom(async (email,{req}) => {
+    .custom(async (email, { req }) => {
       const user = await User.findOne({ email });
       // Checking if the new email is already in database 
       // if the user exist than only taht user can manipuate that user
-      if (user && user._id.toString()!==req.user.userId) {
+      if (user && user._id.toString() !== req.user.userId) {
         throw new BadRequestError("Email Already Exist");
       }
-    }), 
+    }),
   body("location").notEmpty().withMessage("location is required"),
   body("lastName").notEmpty().withMessage("lastName is required"),
 ]);
+export const validateForgotPasswordEmail = withValidationErrors([
+  body("email").custom(async (email) => {
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new NotFoundError(`${email} Does'nt Exist in Database!`);
+    }
+  })
+])
