@@ -36,6 +36,16 @@ app.use(limiter);
 //CORS
 app.use(cors({ origin: "https://foodapp-react-sctz.onrender.com/" }));
 
+const PORT = process.env.PORT || 1100;
+try {
+  await mongoose.connect(process.env.MONGO_URL);
+  app.listen(PORT, () => {
+    console.log(`Server is running  on Port ${PORT}`);
+  });
+} catch (err) {
+  console.log(err.message);
+  process.exit(1);
+}
 
 export const RazorPayInstance = new Razorpay({
   key_id: process.env.RAZORPAY_API_KEY,
@@ -64,13 +74,3 @@ app.get("/", (req, res, next) => {
 //middleware  
 app.use(errorHandlerMiddleware);
 
-const PORT = process.env.PORT || 1100;
-try {
-  await mongoose.connect(process.env.MONGO_URL);
-  app.listen(PORT, () => {
-    console.log(`Server is running  on Port ${PORT}`);
-  });
-} catch (err) {
-  console.log(err.message);
-  process.exit(1);
-}
