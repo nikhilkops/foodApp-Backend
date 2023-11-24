@@ -70,6 +70,7 @@ app.use("/api/v1/payment", paymentRouter)
 app.get("/", (req, res, next) => {
   return res.json({ message: "This is a message from default route" });
 });
+app.send("Hi")
 
 //middleware  
 app.use(errorHandlerMiddleware);
