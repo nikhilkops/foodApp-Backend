@@ -19,20 +19,14 @@ import paymentRouter from "./routes/paymentRouter.js"
 import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
 import { authenticateUser } from "./middlewares/authMiddleware.js";
 
+import { limiter } from "./utils/rateLimiter.js";
 // Enable trust proxy
 app.set('trust proxy', true);
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }))
+app.use(errorHandlerMiddleware); 
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 15, // limit each IP to 100 requests per windowMs 
-  keyGenerator: (req) => {
-    // Your custom key generation logic
-    return req.headers['x-api-key'] || req.ip;
-  }
-});
 app.use(limiter);
 //CORS
 app.use(cors({ origin: "https://foodapp-react-sctz.onrender.com/" }));
@@ -73,5 +67,4 @@ app.get("/", (req, res, next) => {
 });
 
 //middleware  
-app.use(errorHandlerMiddleware);
 
