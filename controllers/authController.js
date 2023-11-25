@@ -50,13 +50,13 @@ export const forgetPasswordController = async (req, res) => {
 
     const user = await UserModel.findOne({ email });
 
-    const otp = getOTP();
+    const otp = getOTP(); 
     const hashedOTP = await encryptPassword(otp);
     const otpDB = {
       userId: user._id,
       otp: hashedOTP
-    } 
-    await OTPModel.findOneAndUpdate({ _id: user._id }, otpDB, { upsert: true, new: true }); 
+    }
+    await OTPModel.findOneAndUpdate({ _id: user._id }, otpDB, { upsert: true, new: true });
     const otpDetails = {
       email: user.email,
       otp: otp,
@@ -67,5 +67,34 @@ export const forgetPasswordController = async (req, res) => {
     res.json({ result: `OTP Send to ${email}` });
   } catch (err) {
     res.json(err.message);
+  }
+}
+
+export const resetPasswordController = async (req, res) => {
+  try {
+    const { otp, email, password } = req.body;
+
+    const user = await UserModel.findOneAndUpdate({ email }, { new: true });
+    const userId = user._id;
+
+    const userOTP = await OTPModel.findOne({ userId })
+    const storedOTP = userOTP.otp; 
+    console.log(storedOTP) 
+
+    const compareOTP = await comparePassword(otp, storedOTP)
+    if (compareOTP) {
+      const hashedPassword = await encryptPassword(password)
+      user.password = hashedPassword;
+      user.save();
+      res.status(StatusCodes.NO_CONTENT).json({});
+    }
+    else {
+      res.status(StatusCodes.UNAUTHORIZED).json({ message: "OTP is Wrong !" })
+    }
+
+
+  } catch (err) {
+
+    res.send(err.message);
   }
 }
