@@ -26,8 +26,7 @@ export const userLogin = async (req, res) => {
   res.status(StatusCodes.OK).json(user);
 };
 
-export const userSignup = async (req, res) => {
-
+export const userSignup = async (req, res) => { 
   const user = req.body;
   const hashedPassword = await encryptPassword(user.password);
   user.password = hashedPassword;
@@ -39,8 +38,7 @@ export const userLogout = async (req, res) => {
   res.cookie('JWT_TOKEN', 'logout', {
     httpOnly: true,
     expires: new Date(Date.now()),
-  })
-
+  }) 
   res.status(StatusCodes.OK).json({ message: 'User Logout!' })
 }
 
