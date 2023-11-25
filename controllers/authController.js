@@ -78,8 +78,7 @@ export const resetPasswordController = async (req, res) => {
     const userId = user._id;
 
     const userOTP = await OTPModel.findOne({ userId })
-    const storedOTP = userOTP.otp; 
-    console.log(storedOTP) 
+    const storedOTP = userOTP.otp;  
 
     const compareOTP = await comparePassword(otp, storedOTP)
     if (compareOTP) {
