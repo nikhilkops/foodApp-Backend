@@ -124,3 +124,23 @@ export const validateForgotPasswordEmail = withValidationErrors([
     }
   })
 ])
+export const validatePasswordUpdate = withValidationErrors([
+  body("email")
+    .trim()
+    .notEmpty()
+    .withMessage("Email cannot be empty")
+    .isEmail()
+    .withMessage("Invalid Email Format")
+    .custom(async (email) => {
+      const user = await User.findOne({ email });
+      if (!user) {
+        throw new NotFoundError("Email Does'nt Exist");
+      }
+    }),
+  body("otp").notEmpty().withMessage("OTP Cannot be empty").isLength(7).withMessage("OTP Should be of 8 Digits"),
+  body("password")
+    .notEmpty()
+    .withMessage("Password cannot be empty")
+    .isLength({ min: 8 })
+    .withMessage("Password must be at least 8 Character Long") 
+]);

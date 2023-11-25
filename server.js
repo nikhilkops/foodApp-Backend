@@ -4,8 +4,7 @@ dotenv.config();
 import Razorpay from 'razorpay'
 import express from "express";
 import cors from "cors";
-const app = express();
-
+const app = express(); 
 import morgan from "morgan";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
@@ -17,9 +16,9 @@ import pricingRouter from "./routes/pricingRoutes.js"
 import paymentRouter from "./routes/paymentRouter.js"
 // middleware
 import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
-import { authenticateUser } from "./middlewares/authMiddleware.js";
-
+import { authenticateUser } from "./middlewares/authMiddleware.js"; 
 import { limiter } from "./utils/rateLimiter.js";
+
 // Enable trust proxy
 app.set('trust proxy', true);
 app.use(express.json());
@@ -27,6 +26,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }))
 app.use(errorHandlerMiddleware); 
 
+//rate limiter
 app.use(limiter);
 //CORS
 app.use(cors({ origin: "https://foodapp-react-sctz.onrender.com/" }));
@@ -66,5 +66,5 @@ app.get("/", (req, res, next) => {
   return res.json({ message: "This is a message from default route" });
 });
 
-//middleware  
+ 
 
