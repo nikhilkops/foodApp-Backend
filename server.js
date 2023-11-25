@@ -24,6 +24,7 @@ app.set('trust proxy', true);
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }))
+
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 15, // limit each IP to 100 requests per windowMs 
