@@ -26,7 +26,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }))
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 20, // limit each IP to 100 requests per windowMs 
+  max: 15, // limit each IP to 100 requests per windowMs 
   keyGenerator: (req) => {
     // Your custom key generation logic
     return req.headers['x-api-key'] || req.ip;
@@ -64,12 +64,12 @@ app.use("/api/v1/users", authenticateUser, userRouter);
 //Getting Pricing card Data
 app.use("/api/v1/pricing", pricingRouter)
 //Payment
-app.use("/api/v1/payment", paymentRouter)
+app.use("/api/v1/payment", authenticateUser, paymentRouter)
 
 
 app.get("/", (req, res, next) => {
   return res.json({ message: "This is a message from default route" });
-}); 
+});
 
 //middleware  
 app.use(errorHandlerMiddleware);
