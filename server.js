@@ -54,8 +54,8 @@ app.get("/", (req, res, next) => {
   return res.json({ message: "This is a message from default route" });
 });
 
-
 app.use(errorHandlerMiddleware); 
+
 
 const PORT = process.env.PORT || 1100;
 try { 
