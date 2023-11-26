@@ -1,7 +1,7 @@
 import "express-async-errors";
 import UserModel from "../models/UserModel.js";
 import OTPModel from "../models/otpModel.js";
-import { UnauthenticatedError } from "../errors/customErros.js";
+import { BadRequestError, UnauthenticatedError } from "../errors/customErros.js";
 import { StatusCodes } from "http-status-codes";
 import { encryptPassword, comparePassword } from "../utils/passwordUtils.js";
 import { createJWT, createJWT_OTP } from "../utils/tokenUtils.js";
@@ -48,7 +48,6 @@ export const forgetPasswordController = async (req, res) => {
     let { email } = req.body;
 
     const user = await UserModel.findOne({ email });
-
     const resetToken = createJWT_OTP({ userId: user._id });
     console.log("hello")
     const resetLink = `https://foodapp-react-sctz.onrender.com/reset-password?token=${resetToken}`;
@@ -70,24 +69,22 @@ export const forgetPasswordController = async (req, res) => {
 export const resetPasswordController = async (req, res) => {
   try {
     const { token, password } = req.body;
-    const { id } = verifyJWT(token)
-    const user = await UserModel.findOneAndUpdate({ email }, { new: true });
-    const userId = user._id;
+    const { userId } = verifyJWT(token)
+    const user = await UserModel.findByIdAndUpdate({ _id: userId }, { new: true });
 
-    const userOTP = await OTPModel.findOne({ id }) 
+    const userOTP = await OTPModel.findOne({ userId })
 
-    const compareOTP = await comparePassword(otp, storedOTP)
-    if (compareOTP) {
+    if (token === userOTP.otp) {
       const hashedPassword = await encryptPassword(password)
       user.password = hashedPassword;
       user.save();
+      // Delete the userOTP record
+      await OTPModel.deleteOne({ userId })
       res.status(StatusCodes.NO_CONTENT).json({});
     }
     else {
       res.status(StatusCodes.UNAUTHORIZED).json({ message: "OTP is Wrong !" })
     }
-
-
   } catch (err) {
 
     res.send(err.message);
