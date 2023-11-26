@@ -13,3 +13,11 @@ export const verifyJWT = (JWT_TOKEN)=>{
   const decoded = jwt.verify(JWT_TOKEN, process.env.JWT_SECRET);
   return decoded ;
 }
+export const createJWT_OTP = (payload) => { 
+ 
+  const token = jwt.sign(payload, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE_IN_OTP,
+  });
+
+  return token;
+};

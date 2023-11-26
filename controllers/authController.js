@@ -4,8 +4,9 @@ import OTPModel from "../models/otpModel.js";
 import { UnauthenticatedError } from "../errors/customErros.js";
 import { StatusCodes } from "http-status-codes";
 import { encryptPassword, comparePassword } from "../utils/passwordUtils.js";
-import { createJWT } from "../utils/tokenUtils.js";
+import { createJWT, createJWT_OTP } from "../utils/tokenUtils.js";
 import { getOTP, mailSender } from "../utils/otp.js";
+import { verifyJWT } from "../utils/tokenUtils.js";
 export const userLogin = async (req, res) => {
   const { email, password } = req.body;
   const user = await UserModel.findOne({ email });
@@ -26,7 +27,7 @@ export const userLogin = async (req, res) => {
   res.status(StatusCodes.OK).json(user);
 };
 
-export const userSignup = async (req, res) => { 
+export const userSignup = async (req, res) => {
   const user = req.body;
   const hashedPassword = await encryptPassword(user.password);
   user.password = hashedPassword;
@@ -38,7 +39,7 @@ export const userLogout = async (req, res) => {
   res.cookie('JWT_TOKEN', 'logout', {
     httpOnly: true,
     expires: new Date(Date.now()),
-  }) 
+  })
   res.status(StatusCodes.OK).json({ message: 'User Logout!' })
 }
 
@@ -48,19 +49,15 @@ export const forgetPasswordController = async (req, res) => {
 
     const user = await UserModel.findOne({ email });
 
-    const otp = getOTP(); 
-    const hashedOTP = await encryptPassword(otp);
-    const otpDB = {
-      userId: user._id,
-      otp: hashedOTP
-    }
-    await OTPModel.findOneAndUpdate({ _id: user._id }, otpDB, { upsert: true, new: true });
-    const otpDetails = {
+    const resetToken = createJWT_OTP({ userId: user._id });
+    const resetLink = `https://foodapp-react-sctz.onrender.com/reset-password?token=${resetToken}`;
+    await OTPModel.findOneAndUpdate({ id: user._id }, { $set: { otp: resetToken, } }, { upsert: true });
+    const emailDetails = {
       email: user.email,
-      otp: otp,
+      resetLink: resetLink,
       name: user.name
     }
-    await mailSender(otpDetails); //send otp to mail nikhil.kops@gmail.com
+    await mailSender(emailDetails); //send otp to mail nikhil.kops@gmail.com
 
     res.json({ result: `OTP Send to ${email}` });
   } catch (err) {
@@ -70,13 +67,12 @@ export const forgetPasswordController = async (req, res) => {
 
 export const resetPasswordController = async (req, res) => {
   try {
-    const { otp, email, password } = req.body;
-
+    const { token, password } = req.body;
+    const { id } = verifyJWT(token)
     const user = await UserModel.findOneAndUpdate({ email }, { new: true });
     const userId = user._id;
 
-    const userOTP = await OTPModel.findOne({ userId })
-    const storedOTP = userOTP.otp;  
+    const userOTP = await OTPModel.findOne({ id }) 
 
     const compareOTP = await comparePassword(otp, storedOTP)
     if (compareOTP) {
