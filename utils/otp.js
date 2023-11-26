@@ -18,11 +18,11 @@ export const getOTPtemlate = (emailDetails) => {
       <img src="https://omnifood.dev/img/omnifood-logo.png" alt="OmniFood Logo" style="max-width: 100px; height: auto;">
       </div>
       <p style="font-size: 1.1em">Hi, ${emailDetails.name}</p>
-      <p>We received a request to reset the password associated with your OmniFood account. Please use the following One-Time Password (OTP) to complete the password reset process:</p>
+      <p>We received a request to reset the password associated with your OmniFood account. Please use the following Link provided below to complete the password reset process:</p>
       <h2 style="background: #e67e22; margin: 0 auto; width: max-content; padding: 0 10px; color: #fff; border-radius: 4px;"> 
       <a href="${emailDetails.resetLink}" style="color: #fff; text-decoration: none;">Reset Link</a>  </h2> 
       <p>If the button above doesn't work, you can also <a href="${emailDetails.resetLink}" style="color: #0000FF; text-decoration: none;">click here to reset your password</a>.</p> 
-      <p style="font-size: 0.9em;">This OTP is valid for 5 minutes. If you didn't request a password reset, please disregard this email.</p>
+      <p style="font-size: 0.9em;">This Link is valid for 5 minutes. If you didn't request a password reset, please disregard this email.</p>
       <p style="font-size: 0.9em;">Regards,<br />OmniFood Team</p>
       <hr style="border: none; border-top: 1px solid #eee" />
       <div style="float: right; padding: 8px 0; color: #aaa; font-size: 0.8em; line-height: 1; font-weight: 300">
