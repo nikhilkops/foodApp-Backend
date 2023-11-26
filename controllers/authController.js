@@ -50,8 +50,9 @@ export const forgetPasswordController = async (req, res) => {
     const user = await UserModel.findOne({ email });
 
     const resetToken = createJWT_OTP({ userId: user._id });
+    console.log("hello")
     const resetLink = `https://foodapp-react-sctz.onrender.com/reset-password?token=${resetToken}`;
-    await OTPModel.findOneAndUpdate({ id: user._id }, { $set: { otp: resetToken, } }, { upsert: true });
+    await OTPModel.findOneAndUpdate({ userId: user._id }, { $set: { otp: resetToken, } }, { upsert: true });
     const emailDetails = {
       email: user.email,
       resetLink: resetLink,
@@ -61,6 +62,7 @@ export const forgetPasswordController = async (req, res) => {
 
     res.json({ result: `OTP Send to ${email}` });
   } catch (err) {
+
     res.json(err.message);
   }
 }
